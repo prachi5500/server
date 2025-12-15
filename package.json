@@ -28,5 +28,9 @@
     "razorpay": "^2.9.6",
     "uuid": "^13.0.0",
     "vite_react_shadcn_ts": "file:.."
-  }
+  },
+  "engines": {
+  "node": "18.x"
+}
+
 }
