@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node --watch index.js",
+    "dev": "node index.js",
     "start": "node index.js",
     "prod:3001": "set NODE_ENV=production&& set PORT=3001&& node index.js",
     "dev:3002": "set PORT=3002&& node --watch index.js"
@@ -30,7 +30,6 @@
     "vite_react_shadcn_ts": "file:.."
   },
   "engines": {
-  "node": "18.x"
-}
-
+    "node": "22.x"
+  }
 }
