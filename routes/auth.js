@@ -91,7 +91,10 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body || {};
     const user = await User.findOne({ email });
-    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+    if (!user.isVerified) {
+  return res.status(403).json({ error: "Please verify your email first" });
+}
+    // if (!user) return res.status(401).json({ error: 'Invalid credentials' });
     const ok = await bcrypt.compare(password, user.passwordHash);
     if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
     const token = jwt.sign({ sub: user._id.toString(), role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
@@ -119,12 +122,12 @@ router.post('/send-signup-otp', async (req, res) => {
 
 
      // ✅ OTP store mein save karein with user details
-    otpStore.set(email, {
-      otp,
-      otpExpiry,
-      name,
-      phone
-    });
+    // otpStore.set(email, {
+    //   otp,
+    //   otpExpiry,
+    //   name,
+    //   phone
+    // });
     // For new users, we'll store the OTP in a temporary user document
     await User.findOneAndUpdate(
       { email },
@@ -312,7 +315,7 @@ router.post("/request-reset", async (req, res) => {
     await user.save();
 
     // const resetLink = http://localhost:8080/reset-password?token=${token};
-    const resetLink = `http://localhost:8080/reset-password?token=${token}`;
+    const resetLink = `${process.env.CORS_ORIGIN}/reset-password?token=${token}`;
 
     await transporter.sendMail({
       from: process.env.CONTACT_FROM,
@@ -384,6 +387,12 @@ router.get('/me', authRequired, async (req, res) => {
       phone: req.user.phone, 
   } });
 });
+
+
+router.post("/logout", (req, res) => {
+  res.json({ success: true, message: "Logged out" });
+});
+
 
 
 
