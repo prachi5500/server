@@ -97,7 +97,7 @@ router.post('/login', async (req, res) => {
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
     const ok = await bcrypt.compare(password, user.passwordHash);
     if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
-    const token = jwt.sign({ sub: user._id.toStgitring(), role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ sub: user._id.toString(), role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
     res.json({ token, user: { id: user._id, email: user.email, role: user.role } });
   } catch (e) {
     res.status(500).json({ error: 'Login failed' });
@@ -122,18 +122,18 @@ router.post('/send-signup-otp', async (req, res) => {
 
 
      // ✅ OTP store mein save karein with user details
-    // otpStore.set(email, {
-    //   otp,
-    //   otpExpiry,
-    //   name,
-    //   phone
-    // });
+    otpStore.set(email, {
+      otp,
+      otpExpiry,
+      name,
+      phone
+    });
     // For new users, we'll store the OTP in a temporary user document
-    await User.findOneAndUpdate(
-      { email },
-      { otp, otpExpiry },
-      { upsert: true, new: true, setDefaultsOnInsert: true }
-    );
+    // await User.findOneAndUpdate(
+    //   { email },
+    //   { otp, otpExpiry },
+    //   { upsert: true, new: true, setDefaultsOnInsert: true }
+    // );
 
     // Send OTP to email
     const sent = await sendOTP(email, otp);
@@ -173,7 +173,7 @@ router.post('/verify-signup-otp', async (req, res) => {
     // Check if this is the first user (admin)
     const usersCount = await User.countDocuments({ isVerified: true });
     const role = usersCount === 0 ? 'admin' : 'user';
-
+user.role = role;
     // Update user with password and mark as verified
     user.passwordHash = passwordHash;
     user.isVerified = true;
