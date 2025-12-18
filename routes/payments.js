@@ -7,7 +7,7 @@ import Template from '../models/Template.js';
 import nodemailer from 'nodemailer';
 import { v2 as cloudinary } from 'cloudinary';
 import { PDFDocument } from 'pdf-lib';
-import { createCanvas, loadImage, registerFont } from 'canvas';
+// import { createCanvas, loadImage, registerFont } from 'canvas';
 import { writeFileSync } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
