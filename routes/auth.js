@@ -91,13 +91,13 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body || {};
     const user = await User.findOne({ email });
-    if (!user.isVerified) {
-  return res.status(403).json({ error: "Please verify your email first" });
-}
-    // if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+//     if (!user.isVerified) {
+//   return res.status(403).json({ error: "Please verify your email first" });
+// }
+    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
     const ok = await bcrypt.compare(password, user.passwordHash);
     if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
-    const token = jwt.sign({ sub: user._id.toString(), role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ sub: user._id.toStgitring(), role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
     res.json({ token, user: { id: user._id, email: user.email, role: user.role } });
   } catch (e) {
     res.status(500).json({ error: 'Login failed' });
