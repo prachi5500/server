@@ -17,7 +17,7 @@ const app = express();
 // Allow requests from your specific Frontend URL
 app.use(cors({
   origin: [
-    'https://generate-card-delta.vercel.app',
+    'https://front-server-six.vercel.app/',
     'http://localhost:8080',
     'http://localhost:8081',
     'http://localhost:3000',
