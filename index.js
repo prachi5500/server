@@ -25,7 +25,7 @@ app.use(cors({
     'http://127.0.0.1:8080',
     'http://127.0.0.1:8081'
   ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+ 
   credentials: true
 }));
 
@@ -78,7 +78,7 @@ app.get('/', (req, res) => {
   res.send("Backend is running successfully. Please use the Frontend URL to view the application.");
 });
 
-const PORT = 3003; 
+const PORT = process.env.PORT || 3003;
 app.listen(PORT, () => {
   console.log(`API listening on port ${PORT}`);
 });
